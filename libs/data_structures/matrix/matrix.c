@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <limits.h>
 
 matrix getMemMatrix(int nRows, int nCols) {
     int **values = (int **) malloc(sizeof(int *) * nRows);
@@ -107,13 +108,174 @@ int getSum(const int *a, int n) {
     return sum;
 }
 
-void insertionSortRowsMatrixByRowCriteria(matrix m,
-                                          int (*criteria)(int *, int)) {
-    int auxiliary_array[m.nRows];
+void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int)) {
+    int nRows = m.nRows;
+    int rowSums[nRows];
 
-    for (int i = 0; i < m.nRows; i++) {
-        auxiliary_array[i] = getSum(m.values[i], INT_MAX); // ИСПРАВИТЬ
+    for (int i = 0; i < nRows; i++) {
+        rowSums[i] = criteria(m.values[i], m.nCols);
     }
 
-    // ДОДЕЛАТЬ
+    for (int i = 1; i < nRows; i++) {
+        int currentSum = rowSums[i];
+        int *currentRow = m.values[i];
+        int j = i - 1;
+
+        while (j >= 0 && rowSums[j] > currentSum) {
+            rowSums[j + 1] = rowSums[j];
+            m.values[j + 1] = m.values[j];
+            j--;
+        }
+        rowSums[j + 1] = currentSum;
+        m.values[j + 1] = currentRow;
+    }
+}
+
+void selectionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int)) {
+    int i, j, k;
+    for (i = 0; i < m.nCols; i++) {
+        for (j = i + 1; j < m.nCols; j++) {
+            int *col1 = (int *) malloc(m.nRows * sizeof(int));
+            int *col2 = (int *) malloc(m.nRows * sizeof(int));
+
+            for (k = 0; k < m.nRows; k++) {
+                col1[k] = m.values[k][i];
+                col2[k] = m.values[k][j];
+            }
+
+            if (criteria(col1, m.nRows) > criteria(col2, m.nRows)) {
+                // Swap columns
+                for (k = 0; k < m.nRows; k++) {
+                    int temp = m.values[k][i];
+                    m.values[k][i] = m.values[k][j];
+                    m.values[k][j] = temp;
+                }
+            }
+
+            free(col1);
+            free(col2);
+        }
+    }
+}
+
+bool isSquareMatrix(matrix *m) {
+    return m->nRows == m->nCols;
+}
+
+#include <string.h>
+
+bool areTwoMatricesEqual(matrix *m1, matrix *m2) {
+    if (m1->nRows != m2->nRows || m1->nCols != m2->nCols) {
+        return false;
+    }
+
+    if (memcmp(m1->values, m2->values, m1->nRows * m1->nCols * sizeof(int)) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+bool isEMatrix(matrix *m) {
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = 0; j < m->nCols; j++) {
+            if (j != i && m->values[i][j] != 0) {
+                return false;
+            } else if (m->values[i][j] != 1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool isSymmetricMatrix(matrix *m) {
+    if (m->nRows != m->nCols) {
+        return false; // Матрица не квадратная, не может быть симметричной
+    }
+
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = i + 1; j < m->nCols; j++) {
+            if (m->values[i][j] != m->values[j][i]) {
+                return false; // Найдено несовпадение симметричных элементов
+            }
+        }
+    }
+
+    return true; // Все пары симметричных элементов совпадают
+}
+
+void swap(int *a, int *b) {
+    int x = *a;
+    *a = *b;
+    *b = x;
+}
+
+void transposeSquareMatrix(matrix *m) {
+    assert(m->nRows == m->nCols);
+
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = i + 1; j < m->nCols; j++) {
+            int temp = m->values[i][j];
+            m->values[i][j] = m->values[j][i];
+            m->values[j][i] = temp;
+        }
+    }
+}
+
+void transposeMatrix(matrix *m) {
+    for (int i = 0; i < m->nRows; i++) {
+        for (int j = i + 1; j < m->nCols; j++) {
+            int temp = m->values[i][j];
+            m->values[i][j] = m->values[j][i];
+            m->values[j][i] = temp;
+        }
+    }
+}
+
+position getMinValuePos(matrix m) {
+    position min_element_position;
+    int min_element = INT_MAX;
+
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            if (m.values[i][j] < min_element) {
+                min_element = m.values[i][j];
+                min_element_position.rowIndex = i;
+                min_element_position.colIndex = j;
+            }
+        }
+    }
+    return min_element_position;
+}
+
+
+position getMaxValuePos(matrix m) {
+    position max_element_position;
+    int max_element = INT_MIN;
+
+    for (int i = 0; i < m.nRows; i++) {
+        for (int j = 0; j < m.nCols; j++) {
+            if (m.values[i][j] > max_element) {
+                max_element = m.values[i][j];
+                max_element_position.rowIndex = i;
+                max_element_position.colIndex = j;
+            }
+        }
+    }
+    return max_element_position;
+}
+
+matrix createMatrixFromArray(const int *a, int nRows, int nCols) {
+    matrix m = getMemMatrix(nRows, nCols);
+    int k = 0;
+
+    for (int i = 0; i < nRows; i++) {
+        for (int j = 0; j < nCols; j++) {
+            m.values[i][j] = a[k++];
+        }
+    }
+
+    return m;
 }
