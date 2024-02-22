@@ -4,63 +4,48 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef struct matrix {
-    int **values; // элементы матрицы
-    int nRows; // количество рядов
-    int nCols; // количество столбцов
-} matrix;
+void testGetMemMatrix();
 
-typedef struct position {
-    int rowIndex;
-    int colIndex;
-} position;
+void testGetMemArrayOfMatrices();
 
-matrix testGetMemMatrix(int nRows, int nCols);
+void testFreeMemMatrix();
 
-matrix *testGetMemArrayOfMatrices(int nMatrices, int nRows, int nCols);
+void testFreeMemMatrices();
 
-void testFreeMemMatrix(matrix *m);
+void testInputMatrix();
 
-void testFreeMemMatrices(matrix *ms, int nMatrices);
+void testInputMatrices();
 
-void testInputMatrix(matrix *m);
+void testOutputMatrix();
 
-void testInputMatrices(matrix *ms, int nMatrices);
+void testOutputMatrices();
 
-void testOutputMatrix(matrix m);
+void testSwapRows();
 
-void testOutputMatrices(matrix *ms, int nMatrices);
+void testSwapColumns();
 
-void testSwapRows(matrix *m, int i1, int i2);
-
-void testSwapColumns(matrix *m, int j1, int j2);
-
-void testInsertionSortRowsMatrixByRowCriteria(matrix m,
-                                          int (*criteria)(int *, int));
+void testInsertionSortRowsMatrixByRowCriteria();
 
 int testGetSum(const int *a, int n);
 
-void testSelectionSortColsMatrixByColCriteria(matrix m,
-                                          int (*criteria)(int*, int));
+void testSelectionSortColsMatrixByColCriteria();
 
-bool testIsSquareMatrix(matrix *m);
+void testIsSquareMatrix();
 
-bool testAreTwoMatricesEqual(matrix *m1, matrix *m2);
+void testAreTwoMatricesEqual();
 
-bool testIsEMatrix(matrix *m);
+void testIsEMatrix();
 
-bool testIsSymmetricMatrix(matrix *m);
+void testIsSymmetricMatrix();
 
-void testTransposeSquareMatrix(matrix *m);
+void testTransposeSquareMatrix();
 
-void testTransposeMatrix(matrix *m);
+void testTransposeMatrix();
 
-position testGetMinValuePos(matrix m);
+void testGetMinValuePos();
 
-position testGetMaxValuePos(matrix m);
+void testGetMaxValuePos();
 
-matrix testCreateMatrixFromArray(const int *a, int nRows,
-                             int nCols);
 
 
 #endif //LABORATORY_15_TEST_MATRIX_H
