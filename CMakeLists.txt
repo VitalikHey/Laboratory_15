@@ -11,6 +11,7 @@ add_executable(Laboratory_15
         libs/data_structures/test_matrix/test_matrix.c
         libs/data_structures/matrix/matrix.h
         libs/tasks_for_16_laboratory/tasks.c
-        libs/tasks_for_16_laboratory/tasks.h
         libs/algorithms/algorithms.c
+        libs/test_tasks_for_16_laboratory/test_tasks_for_16_laboratory.h
+        libs/test_tasks_for_16_laboratory/test_tasks_for_16_laboratory.c
 )

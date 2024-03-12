@@ -1,5 +1,5 @@
-#ifndef LABORATORY_15_TASKS_H
-#define LABORATORY_15_TASKS_H
+#ifndef LABORATORY_15_ALGORITHMS_H
+#define LABORATORY_15_ALGORITHMS_H
 
 #include "../tasks_for_16_laboratory/tasks.h"
 #include "../data_structures/matrix/matrix.h"

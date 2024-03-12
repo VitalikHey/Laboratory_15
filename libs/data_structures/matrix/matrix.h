@@ -48,6 +48,9 @@ void swapColumns(matrix m, int j1, int j2);
 void insertionSortRowsMatrixByRowCriteria(matrix m,
                                           int (*criteria)(int *, int));
 
+matrix *createArrayOfMatrixFromArray(const int *values, int nMatrices,
+                                     int nRows, int nCols);
+
 void quickSort(int array[], int start, int end, matrix m,
                void (*predicateSwap)(matrix, int, int));
 
