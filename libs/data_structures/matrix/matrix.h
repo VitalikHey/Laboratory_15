@@ -15,6 +15,13 @@ typedef struct position {
     int colIndex;
 } position;
 
+
+int getMax(int *array, int lengthArray);
+
+int getMin(const int array[], int lengthArray);
+
+bool isUnique(const int array[], int lengthArray);
+
 matrix getMemMatrix(int nRows, int nCols);
 
 matrix *getMemArrayOfMatrices(int nMatrices, int nRows, int nCols);
@@ -27,6 +34,9 @@ void inputMatrix(matrix *m);
 
 void inputMatrices(matrix *ms, int nMatrices);
 
+int partition(int array[], int start, int end, matrix m,
+              void (*predicateSwap)(matrix, int, int));
+
 void outputMatrix(matrix m);
 
 void outputMatrices(matrix *ms, int nMatrices);
@@ -38,10 +48,13 @@ void swapColumns(matrix *m, int j1, int j2);
 void insertionSortRowsMatrixByRowCriteria(matrix m,
                                           int (*criteria)(int *, int));
 
+void quickSort(int array[], int start, int end, matrix m,
+               void (*predicateSwap)(matrix, int, int));
+
 int getSum(const int *a, int n);
 
 void selectionSortColsMatrixByColCriteria(matrix m,
-                                          int (*criteria)(int*, int));
+                                          int (*criteria)(int *, int));
 
 bool isSquareMatrix(matrix *m);
 

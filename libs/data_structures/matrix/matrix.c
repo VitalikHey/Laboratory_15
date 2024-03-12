@@ -6,6 +6,30 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <limits.h>
+#include <string.h>
+
+int getMax(int *array, int lengthArray) {
+    int maxNum = array[0];
+    for (int ind = 1; ind < lengthArray; ind++) {
+        if (array[ind] > maxNum) {
+            maxNum = array[ind];
+        }
+    }
+
+    return maxNum;
+}
+
+
+int getMin(const int array[], int lengthArray) {
+    int minNum = array[0];
+    for (int ind = 1; ind < lengthArray; ind++) {
+        if (array[ind] < minNum) {
+            minNum = array[ind];
+        }
+    }
+
+    return minNum;
+}
 
 matrix getMemMatrix(int nRows, int nCols) {
     int **values = (int **) malloc(sizeof(int *) * nRows);
@@ -15,6 +39,12 @@ matrix getMemMatrix(int nRows, int nCols) {
     }
 
     return (matrix) {values, nRows, nCols};
+}
+
+void swap(int *a, int *b) {
+    int x = *a;
+    *a = *b;
+    *b = x;
 }
 
 matrix *getMemArrayOfMatrices(int nMatrices,
@@ -108,6 +138,24 @@ int getSum(const int *a, int n) {
     return sum;
 }
 
+int partition(int array[], const int start, const int end, matrix m,
+              void (*predicateSwap)(matrix, int, int)) {
+    int pivot = array[end];
+    int pivotIndex = start;
+    for (int ind = start; ind < end; ind++) {
+        if (array[ind] <= pivot) {
+            swap(&array[ind], &array[pivotIndex]);
+            predicateSwap(m, ind, pivotIndex);
+            pivotIndex++;
+        }
+    }
+
+    swap(&array[pivotIndex], &array[end]);
+    predicateSwap(m, pivotIndex, end);
+
+    return pivotIndex;
+}
+
 void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int)) {
     int nRows = m.nRows;
     int rowSums[nRows];
@@ -158,11 +206,32 @@ void selectionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int))
     }
 }
 
+void quickSort(int array[], const int start, const int end, matrix m,
+               void (*predicateSwap)(matrix, int, int)) {
+    if (start >= end) {
+        return;
+    }
+
+    int pivot = partition(array, start, end, m, predicateSwap);
+    quickSort(array, start, pivot - 1, m, predicateSwap);
+    quickSort(array, pivot + 1, end, m, predicateSwap);
+}
+
 bool isSquareMatrix(matrix *m) {
     return m->nRows == m->nCols;
 }
 
-#include <string.h>
+bool isUnique(const int array[], int lengthArray) {
+    for (int indNum = 0; indNum < lengthArray - 1; indNum++) {
+        for (int indCheck = indNum + 1; indCheck < lengthArray; indCheck++) {
+            if (array[indNum] == array[indCheck]) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
 
 bool areTwoMatricesEqual(matrix *m1, matrix *m2) {
     if (m1->nRows != m2->nRows || m1->nCols != m2->nCols) {
@@ -204,12 +273,6 @@ bool isSymmetricMatrix(matrix *m) {
     }
 
     return true; // Все пары симметричных элементов совпадают
-}
-
-void swap(int *a, int *b) {
-    int x = *a;
-    *a = *b;
-    *b = x;
 }
 
 void transposeSquareMatrix(matrix *m) {
