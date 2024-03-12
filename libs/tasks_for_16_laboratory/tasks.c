@@ -86,3 +86,37 @@ void task14(matrix *ms, int nMatrix){
     printMatrixWithMaxZeroRows(ms, nMatrix);
 }
 
+void task15(matrix *ms, int nMatrix){
+    if ((nMatrix > 0) && (ms[0].nRows > 0) && (ms[0].nRows == ms[0].nCols)){
+        printMatrixWithMinAbsNorm(ms, nMatrix);
+    }
+}
+
+
+int task16(matrix m){
+    int countSpecialElementsInMatrix = 0;
+    if (m.nRows > 0) {
+        countSpecialElementsInMatrix += getCountSpecialElementsInMatrix(m);
+    }
+
+    return countSpecialElementsInMatrix;
+}
+
+
+int task17(matrix m, int vector[]){
+    int indVector;
+    if (m.nRows > 0){
+        indVector = getVectorIndexWithMaxAngle(m, vector);
+    } else {
+        indVector = -1;
+    }
+
+    return indVector;
+}
+
+
+long long task18(matrix m){
+    long long scalarProduct = getSpecialScalarProduct(m);
+
+    return scalarProduct;
+}
