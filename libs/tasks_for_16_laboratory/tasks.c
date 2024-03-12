@@ -58,3 +58,21 @@ int task8(matrix m, int arrayLengthsShadedColumns[]){
 
     return minNum;
 }
+
+void task9(matrix m){
+    sortByDistances(m);
+}
+
+
+int task10(matrix m){
+    int countUniqueSum = getCountUniqueSum(m);
+
+    return countUniqueSum;
+}
+
+
+int task11(matrix m){
+    int countSpecialLines = calculateCountSpecialLines(m);
+
+    return countSpecialLines;
+}
