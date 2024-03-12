@@ -76,3 +76,9 @@ int task11(matrix m){
 
     return countSpecialLines;
 }
+
+void task12(matrix m){
+    if (isSquareMatrix(&m) && m.nRows > 1){
+        swapPenultimateRow(&m);
+    }
+}
