@@ -61,7 +61,7 @@ void testSwapRows() {
             3, 3
     );
 
-    swapRows(&test_matrix, 0, 1);
+    swapRows(test_matrix, 0, 1);
 
     assert(test_matrix.values[0][0] == 4);
     assert(test_matrix.values[0][1] == 5);
@@ -81,7 +81,7 @@ void testSwapColumns() {
             3, 3
     );
 
-    swapColumns(&test_matrix, 0, 1);
+    swapColumns(test_matrix, 0, 1);
 
     assert(test_matrix.values[0][0] == 2);
     assert(test_matrix.values[0][1] == 1);

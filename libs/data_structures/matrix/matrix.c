@@ -20,16 +20,17 @@ int getMax(int *array, int lengthArray) {
 }
 
 
-int getMin(const int array[], int lengthArray) {
+int getMin(int array[], int lengthArray){
     int minNum = array[0];
-    for (int ind = 1; ind < lengthArray; ind++) {
-        if (array[ind] < minNum) {
+    for (int ind = 1; ind < lengthArray; ind++){
+        if (array[ind] < minNum){
             minNum = array[ind];
         }
     }
 
     return minNum;
 }
+
 
 matrix getMemMatrix(int nRows, int nCols) {
     int **values = (int **) malloc(sizeof(int *) * nRows);
@@ -107,24 +108,27 @@ void outputMatrices(matrix *ms, int nMatrices) {
     }
 }
 
-void swapRows(matrix *m, int i1, int i2) {
-    assert(i1 < m->nRows);
-    assert(i2 < m->nRows);
-    assert(m->values != NULL);
+void swapRows(matrix m, int i1, int i2) {
+    assert(i1 < m.nRows);
+    assert(i2 < m.nRows);
+    assert(m.values != NULL);
 
-    int *rows_1 = m->values[i1];
+    int *rows_1 = m.values[i1];
 
-    m->values[i1] = m->values[i2];
-    m->values[i2] = rows_1;
+    m.values[i1] = m.values[i2];
+    m.values[i2] = rows_1;
 }
 
-void swapColumns(matrix *m, int j1, int j2) {
-    assert(j1 < m->nCols && j2 < m->nCols);
+void swapColumns(matrix m, int j1, int j2){
+    if (j1 >= m.nCols || j2 >= m.nCols){
+        fprintf(stderr, "Index Error");
+        exit(1);
+    }
 
-    for (int i = 0; i < m->nRows; i++) {
-        int colm = m->values[i][j1];
-        m->values[i][j1] = m->values[i][j2];
-        m->values[i][j2] = colm;
+    for (int indRow = 0; indRow < m.nRows; indRow++){
+        int temp = m.values[indRow][j1];
+        m.values[indRow][j1] = m.values[indRow][j2];
+        m.values[indRow][j2] = temp;
     }
 }
 
@@ -179,31 +183,19 @@ void insertionSortRowsMatrixByRowCriteria(matrix m, int (*criteria)(int *, int))
     }
 }
 
-void selectionSortColsMatrixByColCriteria(matrix m, int (*criteria)(int *, int)) {
-    int i, j, k;
-    for (i = 0; i < m.nCols; i++) {
-        for (j = i + 1; j < m.nCols; j++) {
-            int *col1 = (int *) malloc(m.nRows * sizeof(int));
-            int *col2 = (int *) malloc(m.nRows * sizeof(int));
+void selectionSortColsMatrixByColCriteria(matrix m, int (*predicate)(int*, int)){
+    int arrayResults[m.nCols];
 
-            for (k = 0; k < m.nRows; k++) {
-                col1[k] = m.values[k][i];
-                col2[k] = m.values[k][j];
-            }
-
-            if (criteria(col1, m.nRows) > criteria(col2, m.nRows)) {
-                // Swap columns
-                for (k = 0; k < m.nRows; k++) {
-                    int temp = m.values[k][i];
-                    m.values[k][i] = m.values[k][j];
-                    m.values[k][j] = temp;
-                }
-            }
-
-            free(col1);
-            free(col2);
+    for (int indCol = 0; indCol < m.nCols; indCol++){
+        int column[m.nRows];
+        for (int indRow = 0; indRow < m.nRows; indRow++){
+            column[indRow] = m.values[indRow][indCol];
         }
+
+        arrayResults[indCol] = predicate(column, m.nRows);
     }
+
+    quickSort(arrayResults, 0, m.nCols - 1, m, swapColumns);
 }
 
 void quickSort(int array[], const int start, const int end, matrix m,

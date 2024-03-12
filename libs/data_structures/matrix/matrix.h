@@ -18,7 +18,7 @@ typedef struct position {
 
 int getMax(int *array, int lengthArray);
 
-int getMin(const int array[], int lengthArray);
+int getMin(int array[], int lengthArray);
 
 bool isUnique(const int array[], int lengthArray);
 
@@ -41,9 +41,9 @@ void outputMatrix(matrix m);
 
 void outputMatrices(matrix *ms, int nMatrices);
 
-void swapRows(matrix *m, int i1, int i2);
+void swapRows(matrix m, int i1, int i2);
 
-void swapColumns(matrix *m, int j1, int j2);
+void swapColumns(matrix m, int j1, int j2);
 
 void insertionSortRowsMatrixByRowCriteria(matrix m,
                                           int (*criteria)(int *, int));
