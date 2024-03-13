@@ -225,16 +225,20 @@ bool isUnique(const int array[], int lengthArray) {
     return true;
 }
 
-bool areTwoMatricesEqual(matrix *m1, matrix *m2) {
-    if (m1->nRows != m2->nRows || m1->nCols != m2->nCols) {
+bool areTwoMatricesEqual(matrix *m1, matrix *m2){
+    if (m1->nRows != m2->nRows || m1->nCols != m2->nCols){
         return false;
     }
 
-    if (memcmp(m1->values, m2->values, m1->nRows * m1->nCols * sizeof(int)) == 0) {
-        return true;
-    } else {
-        return false;
+    for (int indRow = 0; indRow < m1->nRows; indRow++){
+        int resCheck = memcmp(m1->values[indRow],m2->values[indRow],
+                              sizeof(int) * m1->nCols);
+        if (resCheck){
+            return false;
+        }
     }
+
+    return true;
 }
 
 

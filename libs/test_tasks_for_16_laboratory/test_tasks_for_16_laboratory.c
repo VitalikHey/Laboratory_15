@@ -1,5 +1,5 @@
 #include "test_tasks_for_16_laboratory.h"
-#include "../data_structures/tasks_for_16_laboratory/tasks.h"
+#include "../tasks_for_16_laboratory/tasks.h"
 #include "stdbool.h"
 #include "assert.h"
 
